@@ -1,0 +1,16 @@
+{
+    "name": "SMART SPM",
+    "short_name": "SPM",
+    "background_color": "#165B2E",
+    "display": "fullscreen",
+    "description": "Aplikasi SMART SPM",
+    "theme_color": "#182433",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

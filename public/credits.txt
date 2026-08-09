@@ -1,0 +1,22 @@
+/* TEAM */
+    Name: Azlansaja
+    Role: Developer
+    From: Medan, Indonesia
+
+/* THANKS */
+    Azlansaja: Creator of this project
+
+/* TECHNOLOGY */
+    JavaScript frameworks: React
+    Font scripts: Google Font API, Font Awesome
+    Web frameworks: Laravel
+    Miscellaneous: Gravatar
+    Programming languages: PHP 8.1.12
+    Development: Azlansaja
+    JavaScript libraries: Highlight.js, Axios
+    UI frameworks: Tailwind CSS,
+
+/* CONTACT */
+    Email: Azlansaja19@gmail.com
+    Phone: 085270554715
+    Whatsapp: 085270554715
