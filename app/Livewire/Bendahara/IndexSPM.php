@@ -317,6 +317,7 @@ class IndexSPM extends Component
             $validatedData['status'] = 'draft';                
             $validatedData['status_ajukan'] = 'draft';
             $validatedData['posisi_ajukan'] = 'bendahara';
+            $validatedData['dari_ajukan'] = 'bendahara';
             $validatedData['instansi'] = Auth()->user()->name_instansi;
 
             $validatedData['ppn'] = $this->showPpn ? $this->cleanNumber($this->ppn) : 0;
