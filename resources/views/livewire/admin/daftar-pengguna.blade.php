@@ -83,6 +83,13 @@
                                             </select>
                                             <x-input-error2 for="otorisasi" />
                                         </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Password <span class="form-label-description text-muted">{{ $updateMode ? '(Opsional - kosongkan jika tidak diubah)' : '(Opsional)' }}</span></label>
+                                            <input wire:model="password" type="password"
+                                                placeholder="{{ $updateMode ? 'Kosongkan jika tidak diubah...' : 'Default: 12345678' }}"
+                                                class="form-control @error('password') is-invalid @enderror">
+                                            <x-input-error2 for="password" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -98,7 +105,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="alert alert-danger" role="alert">
+                                        <div class="alert alert-info" role="alert">
                                             <div class="d-flex">
                                                 <div>
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -112,10 +119,13 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <h4 class="alert-title">PENTING !!!</h4>
+                                                    <h4 class="alert-title">Catatan Password:</h4>
                                                     <div class="text-secondary">
-                                                        Semua <strong>pengguna baru</strong> akan mendapat
-                                                        <strong>password</strong> awal yaitu <strong>12345678</strong>
+                                                        @if ($updateMode)
+                                                            Jika kolom password dikosongkan, <strong>password lama</strong> pengguna tidak akan diubah.
+                                                        @else
+                                                            Jika kolom password dikosongkan, <strong>password bawaan</strong> otomatis diset ke <strong>12345678</strong>.
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
