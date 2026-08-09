@@ -431,6 +431,11 @@ class IndexSpm extends Component
             ];
         } elseif ($this->kode == 4) {
             (Auth::user()->otorisasi == 'admin') ? $this->filterStatus = 'diproses' : abort(403, 'Unauthorized');
+            $this->query_cari = [
+                'nomor',
+                'jenis',
+                'penyedia',
+            ];
         } elseif ($this->kode == 5) {
             (Auth::user()->otorisasi == 'bendahara') ? $this->filterStatus = 'sp2d terbit' : abort(403, 'Unauthorized');
             $this->query_cari = [

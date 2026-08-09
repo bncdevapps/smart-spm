@@ -4,13 +4,14 @@ namespace App\Livewire;
 
 use App\Models\Spm;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends Component
 {
-    public $totalSpm;
-    public $totalPerbaikanSpm;
-    public $totalSp2dTerbit;
-    public $totalSpmDitolak;
+    public $totalSpm = 0;
+    public $totalPerbaikanSpm = 0;
+    public $totalSp2dTerbit = 0;
+    public $totalSpmDitolak = 0;
 
     public $nominalTotalSpm = 0;
     public $nominalPerbaikanSpm = 0;
@@ -20,12 +21,30 @@ class Dashboard extends Component
 
     public function mount()
     {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        if ($user->otorisasi === 'ppk') {
+            return $this->redirect(route('daftar-spm-review', ['kode' => 0]), navigate: true);
+        } elseif ($user->otorisasi === 'verifikator') {
+            return $this->redirect(route('daftar-spm-review', ['kode' => 1]), navigate: true);
+        } elseif ($user->otorisasi === 'admin') {
+            return $this->redirect(route('daftar-spm-review', ['kode' => 3]), navigate: true);
+        }
+
         $this->calculateStatistics();
     }
 
     public function calculateStatistics()
     {
-        $userInstansi = Auth()->user()->name_instansi;
+        $user = Auth::user();
+        if (!$user) {
+            return;
+        }
+
+        $userInstansi = $user->name_instansi;
 
         // Count Query
         $this->totalSpm = Spm::where('status', 'diajukan')
@@ -69,13 +88,6 @@ class Dashboard extends Component
 
     public function render()
     {
-        if (Auth()->user()->otorisasi == 'ppk') {
-            $this->redirectRoute('daftar-spm-review', 0);
-        } elseif (Auth()->user()->otorisasi == 'verifikator') {
-            $this->redirectRoute('daftar-spm-review', 1);
-        } elseif (Auth()->user()->otorisasi == 'admin') {
-            $this->redirectRoute('daftar-spm-review', 3);
-        }
         return view('livewire.dashboard');
     }
 }
