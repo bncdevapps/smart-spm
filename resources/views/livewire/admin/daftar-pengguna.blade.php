@@ -41,7 +41,7 @@
                                             <label class="form-label">Nama Instansi</label>
                                             <select wire:model="name_instansi"
                                                 class="form-select @error('name_instansi') is-invalid @enderror">
-                                                <option selected="">Cari...</option>
+                                                <option value="">Pilih Instansi...</option>
                                                 <hr>
                                                 @foreach ($instansis as $data )
                                                 <option value="{{$data->nama}}">{{$data->nama}}</option>
@@ -74,7 +74,7 @@
                                             <label class="form-label">Otorisasi</label>
                                             <select wire:model="otorisasi"
                                                 class="form-select @error('otorisasi') is-invalid @enderror">
-                                                <option selected="" value="2">Cari...</option>
+                                                <option value="">Pilih Otorisasi...</option>
                                                 <hr>
                                                 <option value="admin">Admin</option>
                                                 <option value="bendahara">Bendahara</option>

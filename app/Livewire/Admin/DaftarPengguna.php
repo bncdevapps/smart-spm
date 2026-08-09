@@ -37,25 +37,31 @@ class DaftarPengguna extends Component
             [
                 'name_instansi' => 'required|string',
                 'name' => 'required|string',
-                'username' => 'nullable|string|unique:users',
+                'username' => 'nullable|string|unique:users,username',
                 'keterangan' => 'required|string',
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'otorisasi' => ['required', new Enum(otorisasi::class)],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'otorisasi' => ['required', Rule::in(['bendahara', 'ppk', 'verifikator', 'admin'])],
             ]
         );
-        try {
 
+        if (empty($validatedData['username'])) {
+            $validatedData['username'] = null;
+        }
+
+        try {
             $validatedData['password'] = Hash::make('12345678');
 
             User::create($validatedData);
             $this->reset();
+            $this->isOpen = false;
             $this->alert('success', 'Tambah Pengguna Baru Berhasil.');
         } catch (\Throwable $th) {
-            dd($th);
+            \Illuminate\Support\Facades\Log::error('Gagal tambah pengguna: ' . $th->getMessage());
             $this->alert('error', 'Server sedang sibuk.');
             return;
         }
     }
+
     public function updateId($id)
     {
         $this->resetValidation();
@@ -72,18 +78,23 @@ class DaftarPengguna extends Component
         $this->isOpen = true;
     }
 
-    public function update(User $user)
+    public function update()
     {
         $validatedData = $this->validate(
             [
                 'name_instansi' => 'required|string',
                 'name' => 'required|string',
-                'username' => ['nullable', 'string', Rule::unique('users')->ignore($this->userId)],
+                'username' => ['nullable', 'string', Rule::unique('users', 'username')->ignore($this->userId)],
                 'keterangan' => 'required|string',
-                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($this->userId)],
-                'otorisasi' => ['required', new Enum(otorisasi::class)],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->userId)],
+                'otorisasi' => ['required', Rule::in(['bendahara', 'ppk', 'verifikator', 'admin'])],
             ]
         );
+
+        if (empty($validatedData['username'])) {
+            $validatedData['username'] = null;
+        }
+
         try {
             $user = User::where('id', $this->userId)
                 ->where('id', '!=', auth()->user()->id)
@@ -92,9 +103,10 @@ class DaftarPengguna extends Component
             $user->update($validatedData);
 
             $this->reset();
+            $this->isOpen = false;
             $this->alert('success', 'Perubahan Pengguna Berhasil Disimpan');
         } catch (\Throwable $th) {
-            dd($th);
+            \Illuminate\Support\Facades\Log::error('Gagal update pengguna: ' . $th->getMessage());
             $this->alert('error', 'Server sedang sibuk.');
             return;
         }
