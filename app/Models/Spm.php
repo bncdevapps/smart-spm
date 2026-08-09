@@ -53,6 +53,23 @@ class Spm extends Model
         $this->attributes['jumlah_netto'] = $this->cleanMoney($value);
     }
 
+    public static function cleanDocumentName(?string $name): string
+    {
+        if (empty($name)) {
+            return 'Dokumen Lampiran.pdf';
+        }
+
+        if (preg_match('/-meta(.+)-\.[a-zA-Z0-9]+$/i', $name, $matches)) {
+            $b64 = strtr($matches[1], '-_', '+/');
+            $decoded = @base64_decode($b64);
+            if (!empty($decoded)) {
+                return mb_convert_encoding($decoded, 'UTF-8', 'UTF-8');
+            }
+        }
+
+        return $name;
+    }
+
     /**
      * Accessor to get standard array of documents
      * Compatible with both new JSON array format and legacy single filename string
@@ -64,26 +81,38 @@ class Spm extends Model
             return [];
         }
 
-        if (is_array($val)) {
-            return $val;
-        }
+        $list = [];
 
-        if (is_string($val)) {
+        if (is_array($val)) {
+            $list = $val;
+        } elseif (is_string($val)) {
             $decoded = json_decode($val, true);
             if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                return $decoded;
+                $list = $decoded;
+            } else {
+                // Legacy single file format
+                $list = [
+                    [
+                        'file' => $val,
+                        'nama' => 'Dokumen Lampiran SPM (' . ($this->nomor ?? 'Berkas') . ').pdf',
+                        'size' => null,
+                    ]
+                ];
             }
-
-            // Legacy single file format
-            return [
-                [
-                    'file' => $val,
-                    'nama' => 'Dokumen Lampiran SPM (' . ($this->nomor ?? 'Berkas') . ').pdf',
-                    'size' => null,
-                ]
-            ];
         }
 
-        return [];
+        return array_map(function ($item) {
+            if (is_string($item)) {
+                return [
+                    'file' => $item,
+                    'nama' => self::cleanDocumentName($item),
+                    'size' => null,
+                ];
+            } elseif (is_array($item)) {
+                $rawName = !empty($item['nama']) ? $item['nama'] : (!empty($item['file']) ? $item['file'] : 'Dokumen.pdf');
+                $item['nama'] = self::cleanDocumentName($rawName);
+            }
+            return $item;
+        }, $list);
     }
 }

@@ -307,7 +307,7 @@ class IndexSPM extends Component
                     $file->store(path: 'dokumens');
                     $dokumenList[] = [
                         'file' => $file->hashName(),
-                        'nama' => $file->getClientOriginalName(),
+                        'nama' => Spm::cleanDocumentName($file->getClientOriginalName()),
                         'size' => $file->getSize(),
                     ];
                 }
@@ -582,7 +582,7 @@ class IndexSPM extends Component
                     $file->store(path: 'dokumens');
                     $dokumenList[] = [
                         'file' => $file->hashName(),
-                        'nama' => $file->getClientOriginalName(),
+                        'nama' => Spm::cleanDocumentName($file->getClientOriginalName()),
                         'size' => $file->getSize(),
                     ];
                 }
