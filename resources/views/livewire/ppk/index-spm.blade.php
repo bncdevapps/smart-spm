@@ -138,7 +138,7 @@
                                          <div class="row mb-3">
                                              <label class="col-6 col-form-label text-end">Potongan ({{ $pItem['jenis'] ?? '-' }})</label>
                                              <div class="col">
-                                                 <input type="text" class="form-control" value="Rp. {{ number_format((float) ($pItem['jumlah'] ?? 0), 0, ',', '.') }}" readonly>
+                                                 <input type="text" class="form-control" value="Rp. {{ number_format((float) ($pItem['jumlah'] ?? 0), 0, ',', '.') }}{{ !empty($pItem['id_biling']) ? ' (Billing: '.$pItem['id_biling'].')' : '' }}" readonly>
                                              </div>
                                          </div>
                                          @endforeach

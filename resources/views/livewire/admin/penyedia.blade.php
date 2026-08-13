@@ -171,6 +171,9 @@
                             <td class="text-center fw-medium text-muted">{{ $penyedias->firstItem() + $key }}</td>
                             <td class="text-wrap">
                                 <div class="fw-bold text-dark fs-3 mb-1">{{ $data->nama }}</div>
+                                @if($data->name_instansi)
+                                    <div class="mb-1"><span class="badge bg-indigo-lt small" style="font-size: 0.75rem;">{{ $data->name_instansi }}</span></div>
+                                @endif
                                 @if($data->alamat)
                                     <div class="text-muted small">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pin me-1" width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg>

@@ -49,10 +49,13 @@ class Penyedia extends Component
         ]);
 
         try {
+            $validatedData['name_instansi'] = auth()->user()->name_instansi;
+
             PenyediaModel::create($validatedData);
             $this->closeModal();
             $this->alert('success', 'Simpan Data Penyedia/Rekanan Berhasil');
         } catch (\Throwable $th) {
+            \Illuminate\Support\Facades\Log::error('Gagal tambah penyedia: ' . $th->getMessage());
             $this->alert('error', 'Server sedang sibuk.');
             return;
         }
@@ -61,7 +64,12 @@ class Penyedia extends Component
     public function updateId($id)
     {
         $this->resetValidation();
-        $penyedia = PenyediaModel::findOrFail($id);
+        $query = PenyediaModel::where('id', $id);
+        if (auth()->user()->otorisasi !== 'admin') {
+            $query->where('name_instansi', auth()->user()->name_instansi);
+        }
+        $penyedia = $query->firstOrFail();
+
         $this->penyediaId = $id;
         $this->nama = $penyedia->nama;
         $this->alamat = $penyedia->alamat;
@@ -86,12 +94,17 @@ class Penyedia extends Component
         ]);
 
         try {
-            $penyedia = PenyediaModel::findOrFail($this->penyediaId);
+            $query = PenyediaModel::where('id', $this->penyediaId);
+            if (auth()->user()->otorisasi !== 'admin') {
+                $query->where('name_instansi', auth()->user()->name_instansi);
+            }
+            $penyedia = $query->firstOrFail();
             $penyedia->update($validatedData);
 
             $this->closeModal();
             $this->alert('success', 'Perubahan Data Penyedia/Rekanan Berhasil Disimpan');
         } catch (\Throwable $th) {
+            \Illuminate\Support\Facades\Log::error('Gagal update penyedia: ' . $th->getMessage());
             $this->alert('error', 'Server sedang sibuk.');
             return;
         }
@@ -118,7 +131,12 @@ class Penyedia extends Component
     public function confirmedhapus()
     {
         try {
-            PenyediaModel::where('id', $this->penyediaId)->delete();
+            $query = PenyediaModel::where('id', $this->penyediaId);
+            if (auth()->user()->otorisasi !== 'admin') {
+                $query->where('name_instansi', auth()->user()->name_instansi);
+            }
+            $query->delete();
+
             $this->closeModal();
             $this->alert('success', 'Hapus Data Penyedia/Rekanan Berhasil');
         } catch (\Exception $e) {
@@ -129,7 +147,13 @@ class Penyedia extends Component
 
     public function render()
     {
-        $penyedias = PenyediaModel::whereAny([
+        $queryBuilder = PenyediaModel::query();
+
+        if (auth()->user()->otorisasi !== 'admin') {
+            $queryBuilder->where('name_instansi', auth()->user()->name_instansi);
+        }
+
+        $penyedias = $queryBuilder->whereAny([
                 'nama',
                 'npwp',
                 'nama_bank',

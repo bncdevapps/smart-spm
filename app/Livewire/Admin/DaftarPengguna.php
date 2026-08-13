@@ -26,30 +26,39 @@ class DaftarPengguna extends Component
 
     public $name_instansi, $name, $username, $email, $otorisasi, $keterangan, $query;
 
+    public $password;
+
     public function closeModal()
     {
         $this->reset();
         $this->resetValidation();
     }
+
     public function store()
     {
         $validatedData = $this->validate(
             [
                 'name_instansi' => 'required|string',
                 'name' => 'required|string',
-                'username' => 'nullable|string|unique:users,username',
-                'keterangan' => 'required|string',
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'username' => 'required|string|unique:users,username',
+                'keterangan' => 'nullable|string',
+                'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email'],
                 'otorisasi' => ['required', Rule::in(['bendahara', 'ppk', 'verifikator', 'admin'])],
+                'password' => 'nullable|string|min:6',
+            ],
+            [
+                'username.required' => 'NIP Pegawai wajib diisi.',
+                'username.unique' => 'NIP Pegawai sudah terdaftar.',
             ]
         );
 
-        if (empty($validatedData['username'])) {
-            $validatedData['username'] = null;
-        }
-
         try {
-            $validatedData['password'] = Hash::make('12345678');
+            $plainPassword = !empty($validatedData['password']) ? $validatedData['password'] : '12345678';
+            $validatedData['password'] = Hash::make($plainPassword);
+            $validatedData['must_change_password'] = true;
+            if (empty($validatedData['keterangan'])) {
+                $validatedData['keterangan'] = '-';
+            }
 
             User::create($validatedData);
             $this->reset();
@@ -73,6 +82,7 @@ class DaftarPengguna extends Component
         $this->email = $user->email;
         $this->otorisasi = $user->otorisasi;
         $this->keterangan = $user->keterangan;
+        $this->password = '';
 
         $this->updateMode = true;
         $this->isOpen = true;
@@ -84,21 +94,33 @@ class DaftarPengguna extends Component
             [
                 'name_instansi' => 'required|string',
                 'name' => 'required|string',
-                'username' => ['nullable', 'string', Rule::unique('users', 'username')->ignore($this->userId)],
-                'keterangan' => 'required|string',
-                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->userId)],
+                'username' => ['required', 'string', Rule::unique('users', 'username')->ignore($this->userId)],
+                'keterangan' => 'nullable|string',
+                'email' => ['nullable', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->userId)],
                 'otorisasi' => ['required', Rule::in(['bendahara', 'ppk', 'verifikator', 'admin'])],
+                'password' => 'nullable|string|min:6',
+            ],
+            [
+                'username.required' => 'NIP Pegawai wajib diisi.',
+                'username.unique' => 'NIP Pegawai sudah terdaftar.',
             ]
         );
-
-        if (empty($validatedData['username'])) {
-            $validatedData['username'] = null;
-        }
 
         try {
             $user = User::where('id', $this->userId)
                 ->where('id', '!=', auth()->user()->id)
                 ->firstOrFail();
+
+            if (!empty($validatedData['password'])) {
+                $validatedData['password'] = Hash::make($validatedData['password']);
+                $validatedData['must_change_password'] = true;
+            } else {
+                unset($validatedData['password']);
+            }
+
+            if (empty($validatedData['keterangan'])) {
+                $validatedData['keterangan'] = '-';
+            }
 
             $user->update($validatedData);
 

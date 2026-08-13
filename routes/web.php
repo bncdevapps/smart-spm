@@ -20,7 +20,7 @@ Route::get('/', function () {
     return redirect('/login');
 });
  
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'password-check'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 });
 
@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Bendahara
-Route::middleware(['auth', 'user-access:bendahara'])->group(function () {
+Route::middleware(['auth', 'user-access:bendahara', 'password-check'])->group(function () {
     Route::get('/bendahara/daftar-spm', IndexSPM::class)->name('daftar-spm');
     Route::get('/bendahara/status-spm', StatusSpm::class)->name('status-spm');
 });
@@ -55,7 +55,7 @@ Route::middleware(['auth', 'user-access:admin,verifikator'])->group(function () 
 });
 
 // PPK, Verifikator, Admin, dan Bendahara
-Route::middleware(['auth', 'user-access:ppk,verifikator,admin,bendahara'])->group(function () {
+Route::middleware(['auth', 'user-access:ppk,verifikator,admin,bendahara', 'password-check'])->group(function () {
     // kode
     // ppk [0 = diajukan]
     // verifikator [1 = verifikasi, 2 = menunggu berkas asli]

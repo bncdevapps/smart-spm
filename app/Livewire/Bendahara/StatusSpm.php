@@ -128,6 +128,7 @@ class StatusSpm extends Component
         $this->potongan_items[] = [
             'jenis' => '',
             'jumlah' => 0,
+            'id_biling' => '',
         ];
         $this->hitungNetto();
     }
@@ -436,6 +437,7 @@ class StatusSpm extends Component
             'pajak_lain_items.*.id_biling' => 'ID Billing Pajak Lainnya',
             'potongan_items.*.jenis' => 'Jenis Potongan',
             'potongan_items.*.jumlah' => 'Nominal Potongan',
+            'potongan_items.*.id_biling' => 'ID Billing Potongan',
             'jumlah_netto' => 'Jumlah SPM (Netto)',
         ];
     }
@@ -479,6 +481,7 @@ class StatusSpm extends Component
             foreach ($this->potongan_items as $index => $item) {
                 $rules['potongan_items.' . $index . '.jenis'] = 'required|string';
                 $rules['potongan_items.' . $index . '.jumlah'] = ['required', new ValidJumlah];
+                $rules['potongan_items.' . $index . '.id_biling'] = 'nullable|string|max:255';
             }
         }
 
@@ -538,6 +541,7 @@ class StatusSpm extends Component
                     $potonganClean[] = [
                         'jenis' => $potItem['jenis'] ?? '',
                         'jumlah' => $jml,
+                        'id_biling' => $potItem['id_biling'] ?? '',
                     ];
                 }
             }

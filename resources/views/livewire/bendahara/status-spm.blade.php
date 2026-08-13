@@ -153,7 +153,7 @@
                                          <div class="row mb-3">
                                              <label class="col-6 col-form-label text-end">Potongan ({{ $pItem['jenis'] ?? '-' }})</label>
                                              <div class="col">
-                                                 <input type="text" class="form-control" value="Rp. {{ number_format((float) ($pItem['jumlah'] ?? 0), 0, ',', '.') }}" readonly>
+                                                 <input type="text" class="form-control" value="Rp. {{ number_format((float) ($pItem['jumlah'] ?? 0), 0, ',', '.') }}{{ !empty($pItem['id_biling']) ? ' (Billing: '.$pItem['id_biling'].')' : '' }}" readonly>
                                              </div>
                                          </div>
                                          @endforeach
@@ -390,7 +390,7 @@
                                          <div class="card border-info-subtle bg-blue-lt">
                                              <div class="card-header bg-white py-2 d-flex justify-content-between align-items-center">
                                                  <h4 class="card-title text-primary m-0">
-                                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l18 0" /><path d="M9 8l1 0" /><path d="M9 12l1 0" /><path d="M9 16l1 0" /><path d="M14 8l1 0" /><path d="M14 16l1 0" /><path d="M14 16l1 0" /><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" /></svg>
+                                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l18 0" /><path d="M9 8l1 0" /><path d="M9 12l1 0" /><path d="M9 16l1 0" /><path d="M14 8l1 0" /><path d="M14 12l1 0" /><path d="M14 16l1 0" /><path d="M14 16l1 0" /><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" /></svg>
                                                      Data Penyedia & Akun Pembayaran
                                                  </h4>
                                                  <span class="badge bg-success-lt">Terdaftar</span>
@@ -488,12 +488,12 @@
                                                             <span class="input-group-text pe-1">Rp.</span>
                                                             <input wire:model.live="pajak_lain_items.{{ $index }}.jumlah" x-data x-mask:dynamic="$money($input, ',')" type="text" class="form-control ps-0 @error('pajak_lain_items.'.$index.'.jumlah') is-invalid @enderror">
                                                         </div>
-                                                        <x-input-error2 for="pajak_lain_items.{{ $index }}.jumlah" />
+                                                        <x-input-error2 for="pajak_lain_items.'.$index.'.jumlah" />
                                                     </div>
                                                     <div class="col-md-4 mb-2">
                                                         <label class="form-label">ID Billing Pajak</label>
                                                         <input wire:model="pajak_lain_items.{{ $index }}.id_biling" type="text" class="form-control @error('pajak_lain_items.'.$index.'.id_biling') is-invalid @enderror" placeholder="ID Billing">
-                                                        <x-input-error2 for="pajak_lain_items.{{ $index }}.id_biling" />
+                                                        <x-input-error2 for="pajak_lain_items.'.$index.'.id_biling" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -525,7 +525,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-6 mb-2">
+                                                    <div class="col-md-4 mb-2">
                                                         <label class="form-label">Jenis Potongan</label>
                                                         <select wire:model="potongan_items.{{ $pIndex }}.jenis" class="form-select @error('potongan_items.'.$pIndex.'.jenis') is-invalid @enderror">
                                                             <option value="">-- Pilih Jenis Potongan --</option>
@@ -535,13 +535,18 @@
                                                         </select>
                                                         <x-input-error2 for="potongan_items.{{ $pIndex }}.jenis" />
                                                     </div>
-                                                    <div class="col-md-6 mb-2">
+                                                    <div class="col-md-4 mb-2">
                                                         <label class="form-label">Nominal Potongan</label>
                                                         <div class="input-group input-group-flat">
                                                             <span class="input-group-text pe-1">Rp.</span>
                                                             <input wire:model.live="potongan_items.{{ $pIndex }}.jumlah" x-data x-mask:dynamic="$money($input, ',')" type="text" class="form-control ps-0 @error('potongan_items.'.$pIndex.'.jumlah') is-invalid @enderror">
                                                         </div>
                                                         <x-input-error2 for="potongan_items.{{ $pIndex }}.jumlah" />
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">ID Billing Potongan</label>
+                                                        <input wire:model="potongan_items.{{ $pIndex }}.id_biling" type="text" class="form-control @error('potongan_items.'.$pIndex.'.id_biling') is-invalid @enderror" placeholder="Masukkan ID Billing">
+                                                        <x-input-error2 for="potongan_items.'.$pIndex.'.id_biling" />
                                                     </div>
                                                 </div>
                                             </div>

@@ -27,27 +27,43 @@
                         </div>
                         <form wire:submit="{{ $updateMode ? 'update' : 'store' }}">
                             <div class="modal-body">
+                                <style>
+                                    .modal-content .form-control, .modal-content .form-select {
+                                        background-color: #ffffff !important;
+                                        color: #0f172a !important;
+                                        border: 1.5px solid #cbd5e1 !important;
+                                        border-radius: 8px !important;
+                                        padding: 0.6rem 0.85rem !important;
+                                        font-size: 0.925rem !important;
+                                    }
+                                    .modal-content .form-control:focus, .modal-content .form-select:focus {
+                                        border-color: #2563eb !important;
+                                        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+                                    }
+                                    .modal-content label.form-label {
+                                        color: #1e293b !important;
+                                        font-weight: 600 !important;
+                                        margin-bottom: 0.35rem !important;
+                                    }
+                                </style>
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Nama</label>
-                                            <input wire:model="name" type="text"
+                                            <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+                                            <input wire:model="name" type="text" placeholder="Masukkan nama pengguna..."
                                                 class="form-control @error('name') is-invalid @enderror">
                                             <x-input-error2 for="name" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Nama Instansi</label>
+                                            <label class="form-label">Nama Instansi <span class="text-danger">*</span></label>
                                             <select wire:model="name_instansi"
                                                 class="form-select @error('name_instansi') is-invalid @enderror">
                                                 <option value="">Pilih Instansi...</option>
-                                                <hr>
                                                 @foreach ($instansis as $data )
                                                 <option value="{{$data->nama}}">{{$data->nama}}</option>
                                                 @endforeach
-
-
                                             </select>
                                             <x-input-error2 for="name_instansi" />
                                         </div>
@@ -57,25 +73,29 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Email</label>
-                                            <input wire:model="email" type="email"
-                                                class="form-control @error('email') is-invalid @enderror">
-                                            <x-input-error2 for="email" />
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Username</label>
-                                            <input wire:model="username" type="text"
+                                            <label class="form-label">NIP Pegawai (Username Login) <span class="text-danger">*</span></label>
+                                            <input wire:model="username" type="text" placeholder="Masukkan NIP Pegawai..."
                                                 class="form-control @error('username') is-invalid @enderror">
                                             <x-input-error2 for="username" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Otorisasi</label>
+                                            <label class="form-label">Email <span class="form-label-description text-muted">(Opsional)</span></label>
+                                            <input wire:model="email" type="email" placeholder="contoh@instansi.go.id (Opsional)"
+                                                class="form-control @error('email') is-invalid @enderror">
+                                            <x-input-error2 for="email" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Otorisasi / Peran <span class="text-danger">*</span></label>
                                             <select wire:model="otorisasi"
                                                 class="form-select @error('otorisasi') is-invalid @enderror">
                                                 <option value="">Pilih Otorisasi...</option>
-                                                <hr>
                                                 <option value="admin">Admin</option>
                                                 <option value="bendahara">Bendahara</option>
                                                 <option value="ppk">PPK</option>
@@ -83,6 +103,8 @@
                                             </select>
                                             <x-input-error2 for="otorisasi" />
                                         </div>
+                                    </div>
+                                    <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label class="form-label">Password <span class="form-label-description text-muted">{{ $updateMode ? '(Opsional - kosongkan jika tidak diubah)' : '(Opsional)' }}</span></label>
                                             <input wire:model="password" type="password"
@@ -92,23 +114,25 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Keterangan</label>
-                                            <textarea wire:model="keterangan"
+                                            <label class="form-label">Keterangan <span class="form-label-description text-muted">(Opsional)</span></label>
+                                            <textarea wire:model="keterangan" placeholder="Keterangan tambahan (opsional)..."
                                                 class="form-control @error('keterangan') is-invalid @enderror"
-                                                rows="3"></textarea>
+                                                rows="2"></textarea>
                                             <x-input-error2 for="keterangan" />
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="alert alert-info" role="alert">
-                                            <div class="d-flex">
-                                                <div>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        <div class="alert alert-info border-0 shadow-sm" role="alert" style="border-radius: 10px; background-color: #eff6ff;">
+                                            <div class="d-flex align-items-start">
+                                                <div class="me-3 mt-1 text-blue">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                                         class="icon alert-icon">
@@ -119,12 +143,14 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <h4 class="alert-title">Catatan Password:</h4>
-                                                    <div class="text-secondary">
+                                                    <h4 class="alert-title text-primary fw-bold mb-1">Informasi Akun:</h4>
+                                                    <div class="text-secondary" style="font-size: 0.875rem;">
+                                                        • Pengguna dapat masuk ke sistem menggunakan <strong>NIP Pegawai</strong>.<br>
                                                         @if ($updateMode)
-                                                            Jika kolom password dikosongkan, <strong>password lama</strong> pengguna tidak akan diubah.
+                                                            • Jika kolom password dikosongkan, password pengguna tidak akan diubah.
                                                         @else
-                                                            Jika kolom password dikosongkan, <strong>password bawaan</strong> otomatis diset ke <strong>12345678</strong>.
+                                                            • Password default akun baru diset ke <strong>12345678</strong>.<br>
+                                                            • Role <strong>Bendahara</strong> dan <strong>PPK</strong> wajib mengubah password bawaan saat login pertama kali dengan kombinasi karakter khusus, angka, serta huruf besar & kecil.
                                                         @endif
                                                     </div>
                                                 </div>
@@ -132,10 +158,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
-
                             </div>
 
                             <div class="modal-footer">
@@ -189,7 +211,7 @@
                                     </svg>
                                 </span>
                                 <input wire:model.live="query" type="search" class="form-control "
-                                    placeholder="Cari Berdasarkan Nama" />
+                                    placeholder="Cari Berdasarkan Nama atau NIP Pegawai..." />
                             </div>
 
 
@@ -205,7 +227,7 @@
                                         <th class="w-1">No.</th>
                                         <th>Nama Instansi</th>
                                         <th>Nama</th>
-                                        <th>Username</th>
+                                        <th>NIP Pegawai</th>
                                         <th>Email</th>
                                         <th>Otorisasi</th>
                                         <th></th>

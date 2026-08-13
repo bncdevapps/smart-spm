@@ -143,7 +143,7 @@
                                          <div class="row mb-3">
                                              <label class="col-6 col-form-label text-end">Potongan ({{ $pItem['jenis'] ?? '-' }})</label>
                                              <div class="col">
-                                                 <input type="text" class="form-control" value="Rp. {{ number_format((float) ($pItem['jumlah'] ?? 0), 0, ',', '.') }}" readonly>
+                                                 <input type="text" class="form-control" value="Rp. {{ number_format((float) ($pItem['jumlah'] ?? 0), 0, ',', '.') }}{{ !empty($pItem['id_biling']) ? ' (Billing: '.$pItem['id_biling'].')' : '' }}" readonly>
                                              </div>
                                          </div>
                                          @endforeach
@@ -515,7 +515,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-6 mb-2">
+                                                    <div class="col-md-4 mb-2">
                                                         <label class="form-label">Jenis Potongan</label>
                                                         <select wire:model="potongan_items.{{ $index }}.jenis" class="form-select @error('potongan_items.'.$index.'.jenis') is-invalid @enderror">
                                                             <option value="">-- Pilih Jenis Potongan --</option>
@@ -525,13 +525,18 @@
                                                         </select>
                                                         <x-input-error2 for="potongan_items.{{ $index }}.jenis" />
                                                     </div>
-                                                    <div class="col-md-6 mb-2">
+                                                    <div class="col-md-4 mb-2">
                                                         <label class="form-label">Nominal Potongan</label>
                                                         <div class="input-group input-group-flat">
                                                             <span class="input-group-text pe-1">Rp.</span>
                                                             <input wire:model.live="potongan_items.{{ $index }}.jumlah" x-data x-mask:dynamic="$money($input, ',')" type="text" class="form-control ps-0 @error('potongan_items.'.$index.'.jumlah') is-invalid @enderror">
                                                         </div>
                                                         <x-input-error2 for="potongan_items.{{ $index }}.jumlah" />
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <label class="form-label">ID Billing Potongan</label>
+                                                        <input wire:model="potongan_items.{{ $index }}.id_biling" type="text" class="form-control @error('potongan_items.'.$index.'.id_biling') is-invalid @enderror" placeholder="Masukkan ID Billing">
+                                                        <x-input-error2 for="potongan_items.{{ $index }}.id_biling" />
                                                     </div>
                                                 </div>
                                             </div>

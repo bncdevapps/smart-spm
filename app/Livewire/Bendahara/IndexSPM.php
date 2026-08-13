@@ -97,6 +97,7 @@ class IndexSPM extends Component
         $this->potongan_items[] = [
             'jenis' => '',
             'jumlah' => 0,
+            'id_biling' => '',
         ];
         $this->hitungNetto();
     }
@@ -294,6 +295,7 @@ class IndexSPM extends Component
                 'potongan_items' => 'nullable|array',
                 'potongan_items.*.jenis' => 'nullable|string',
                 'potongan_items.*.jumlah' => 'nullable',
+                'potongan_items.*.id_biling' => 'nullable|string',
                 'potongan' => 'nullable|string',
                 'jumlah_potongan' => 'nullable',
                 'jumlah_netto' => ['required', new ValidJumlah],
@@ -354,6 +356,7 @@ class IndexSPM extends Component
                     $cleanPotonganItems[] = [
                         'jenis' => $item['jenis'] ?? '',
                         'jumlah' => $itemJumlah,
+                        'id_biling' => $item['id_biling'] ?? '',
                     ];
                     if (!empty($item['jenis'])) {
                         $summaryPotonganNames[] = $item['jenis'];
@@ -562,6 +565,7 @@ class IndexSPM extends Component
                 'potongan_items' => 'nullable|array',
                 'potongan_items.*.jenis' => 'nullable|string',
                 'potongan_items.*.jumlah' => 'nullable',
+                'potongan_items.*.id_biling' => 'nullable|string',
                 'potongan' => 'nullable|string',
                 'jumlah_potongan' => 'nullable',
                 'jumlah_netto' => ['required', new ValidJumlah],
@@ -633,6 +637,7 @@ class IndexSPM extends Component
                     $cleanPotonganItems[] = [
                         'jenis' => $item['jenis'] ?? '',
                         'jumlah' => $itemJumlah,
+                        'id_biling' => $item['id_biling'] ?? '',
                     ];
                     if (!empty($item['jenis'])) {
                         $summaryPotonganNames[] = $item['jenis'];
@@ -793,7 +798,10 @@ class IndexSPM extends Component
         $jenisspms = JenisSpm::orderBy('nama', 'asc')->get();
         $pajaks = Pajak::orderBy('nama', 'asc')->get();
         $potongans = Potongan::orderBy('nama', 'asc')->get();
-        $penyedias = Penyedia::orderBy('nama', 'asc')->get();
+        $penyedias = Penyedia::where('name_instansi', Auth()->user()->name_instansi)
+            ->orWhereNull('name_instansi')
+            ->orderBy('nama', 'asc')
+            ->get();
 
         return view('livewire.bendahara.index-s-p-m', [
             'spms' => $spms,

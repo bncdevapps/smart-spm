@@ -10,7 +10,8 @@
         </title>
         <link type="text/plain" rel="author" href="{{ asset('credits.txt') }}" />
 
-        <link rel="shortcut icon" href="{{asset('logo.png')}}" type="image/x-icon" />
+        <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/png" />
+        <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png" />
 
 
         <!-- Scripts -->
@@ -378,6 +379,8 @@
         </div>
 
 
+
+        @livewire('force-password-change-modal')
 
         @stack('modals')
 

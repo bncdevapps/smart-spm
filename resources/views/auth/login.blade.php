@@ -175,14 +175,14 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 
-                <!-- Email / Username Input -->
+                <!-- NIP / Username Input -->
                 <div class="mb-4">
-                    <label class="form-label fw-semibold text-slate-700" style="font-size: 0.875rem; margin-bottom: 0.4rem;">Email atau Username</label>
+                    <label class="form-label fw-semibold text-slate-700" style="font-size: 0.875rem; margin-bottom: 0.4rem;">NIP Pegawai / Username</label>
                     <div class="input-group-custom">
                         <span class="input-icon-left">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </span>
-                        <input class="form-control custom-input" placeholder="Masukkan email atau username"
+                        <input class="form-control custom-input" placeholder="Masukkan NIP Pegawai Anda"
                         id="email" type="text" name="email" :value="old('email')" required autofocus autocomplete="username">
                     </div>
                 </div>
