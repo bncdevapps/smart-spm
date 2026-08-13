@@ -47,8 +47,14 @@ class DaftarPengguna extends Component
                 'password' => 'nullable|string|min:6',
             ],
             [
-                'username.required' => 'NIP Pegawai wajib diisi.',
-                'username.unique' => 'NIP Pegawai sudah terdaftar.',
+                'name_instansi.required' => 'Nama Instansi wajib diisi.',
+                'name.required' => 'Nama Pegawai wajib diisi.',
+                'username.required' => 'NIP Pegawai / Username wajib diisi.',
+                'username.unique' => 'NIP Pegawai / Username sudah terdaftar.',
+                'email.email' => 'Format alamat email tidak valid.',
+                'email.unique' => 'Alamat email sudah terdaftar.',
+                'otorisasi.required' => 'Hak Akses / Otorisasi wajib dipilih.',
+                'password.min' => 'Password minimal terdiri dari 6 karakter.',
             ]
         );
 
@@ -101,8 +107,14 @@ class DaftarPengguna extends Component
                 'password' => 'nullable|string|min:6',
             ],
             [
-                'username.required' => 'NIP Pegawai wajib diisi.',
-                'username.unique' => 'NIP Pegawai sudah terdaftar.',
+                'name_instansi.required' => 'Nama Instansi wajib diisi.',
+                'name.required' => 'Nama Pegawai wajib diisi.',
+                'username.required' => 'NIP Pegawai / Username wajib diisi.',
+                'username.unique' => 'NIP Pegawai / Username sudah terdaftar.',
+                'email.email' => 'Format alamat email tidak valid.',
+                'email.unique' => 'Alamat email sudah terdaftar.',
+                'otorisasi.required' => 'Hak Akses / Otorisasi wajib dipilih.',
+                'password.min' => 'Password minimal terdiri dari 6 karakter.',
             ]
         );
 

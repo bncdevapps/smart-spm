@@ -39,7 +39,7 @@ class JenisSpm extends Component
 
             ModelsJenisSpm::create($validatedData);
             $this->reset();
-            $this->alert('success', 'Simpan Instansi Berhasil');
+            $this->alert('success', 'Simpan Jenis SPM Berhasil');
         } catch (\Throwable $th) {
             dd($th);
             $this->alert('error', 'Server sedang sibuk.');
@@ -73,7 +73,7 @@ class JenisSpm extends Component
 
 
             $this->reset();
-            $this->alert('success', 'Perubahan Instansi Berhasil Disimpan');
+            $this->alert('success', 'Perubahan Jenis SPM Berhasil Disimpan');
         } catch (\Throwable $th) {
             dd($th);
             $this->alert('error', 'Server sedang sibuk.');
@@ -104,7 +104,7 @@ class JenisSpm extends Component
             ModelsJenisSpm::where('id', $this->jenisspmsId)
                 ->delete();
             $this->reset();
-            $this->alert('success', 'Hapus Instansi Berhasil');
+            $this->alert('success', 'Hapus Jenis SPM Berhasil');
         } catch (\Exception $e) {
             $this->alert('error', 'Server sedang sibuk.');
             return;
